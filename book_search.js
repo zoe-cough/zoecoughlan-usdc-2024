@@ -22,9 +22,24 @@
     /** You will need to implement your search and 
      * return the appropriate object here. */
 
+    //need to look at every word of every book
+    const results = []; //hold the results all together
+    for (const book of scannedTextObj) {    //looking at each book 
+        for (const content of book.Content) {   //looking at each content of each book
+            if(content.Text.includes(searchTerm)){  //check the content for the term
+                results.push({  //if it's there, add the book's info to the results
+                    ISBN: book.ISBN,
+                    Page: content.Page,
+                    Line: content.Line,
+                });
+            }
+        }
+    }
+    
+
     var result = {
-        "SearchTerm": "",
-        "Results": []
+        "SearchTerm": searchTerm,
+        "Results": results,
     };
     
     return result; 
@@ -101,4 +116,34 @@ if (test2result.Results.length == 1) {
     console.log("FAIL: Test 2");
     console.log("Expected:", twentyLeaguesOut.Results.length);
     console.log("Received:", test2result.Results.length);
+}
+
+//word that will probably never be present
+const test3result = findSearchTermInBooks("aawagaa", twentyLeaguesIn);
+if (test3result.Results.length == 0) {
+    console.log("PASS: Test 3");
+} else {
+    console.log("FAIL: Test 3");
+    console.log("Expected: 0");
+    console.log("Received:", test3result.Results.length);
+}
+
+//part of a word that's present in multiple lines
+const test4result = findSearchTermInBooks("how", twentyLeaguesIn);
+if (test4result.Results.length == 2) {
+    console.log("PASS: Test 4");
+} else {
+    console.log("FAIL: Test 4");
+    console.log("Expected: 0");
+    console.log("Received:", test4result.Results.length);
+}
+
+//capitalization
+const test5result = findSearchTermInBooks("The", twentyLeaguesIn);
+if (test5result.Results.length == 1) {
+    console.log("PASS: Test 5");
+} else {
+    console.log("FAIL: Test 5");
+    console.log("Expected: 1");
+    console.log("Received:", test5result.Results.length);
 }
